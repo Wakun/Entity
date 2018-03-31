@@ -1,0 +1,7 @@
+{% extends 'scraper/base.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    {% render_table products_list %}
+
+{% endblock %}

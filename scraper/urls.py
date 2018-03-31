@@ -6,4 +6,6 @@ app_name = 'scraper'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^productslist/$', views.products_list, name='Lista produktów'),
+
 ]
