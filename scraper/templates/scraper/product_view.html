@@ -1,0 +1,13 @@
+{% extends 'scraper/base.html' %}
+
+{% block title %}Edycja produktu{% endblock %}
+
+{% block content %}
+    <h1>Edytuj produkt</h1>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Zapisz</button>
+    </form>
+
+{% endblock %}
