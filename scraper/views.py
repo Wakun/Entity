@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 import django_tables2 as tables
 from django_tables2.utils import A
 
+
 from .models import Product
 from .forms import ProductForm
+from .scrapers import rtveuro_scraper, mediamarkt_scraper, mediaexpert_scraper
 
 def index(request):
     return render(request, 'scraper/index.html')
@@ -14,6 +16,7 @@ def index(request):
 class ProductsListTable(tables.Table):
     plu_num = tables.Column()
     art_name = tables.Column()
+    auchan_price = tables.Column()
     rtveuro_price = tables.Column()
     mediamarkt_price = tables.Column()
     mediaexpert_price = tables.Column()
@@ -47,6 +50,7 @@ def add_product(request):
 
     return render(request, 'scraper/add_product.html', {'form': form})
 
+@login_required(login_url='/login')
 def product_view(request, pk):
 
     product = get_object_or_404(Product, pk=pk)
@@ -65,3 +69,27 @@ def product_view(request, pk):
         form = ProductForm(instance=product)
 
     return render(request, 'scraper/product_view.html', {'form': form})
+
+@login_required(login_url='/login')
+def scrap_prices(request):
+
+    import time
+    start_time = time.clock()
+
+    products = Product.objects.all()
+
+    for prod in products:
+        if prod.rtveuro_url:
+            prod.rtveuro_price = rtveuro_scraper(prod.rtveuro_url)
+        if prod.mediamarkt_url:
+            prod.mediamarkt_price = mediamarkt_scraper(prod.mediamarkt_url)
+        if prod.mediaexpert_url:
+            prod.mediaexpert_price = mediaexpert_scraper(prod.mediaexpert_url)
+        prod.save()
+
+    end_time = time.clock()
+
+    time = end_time - start_time
+    time = str(time).split('.', 1)[0]
+
+    return render(request, 'scraper/scrap_prices.html', {'time': time})

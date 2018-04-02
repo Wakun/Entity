@@ -4,6 +4,7 @@ from django.db import models
 class Product(models.Model):
 
     art_name = models.CharField('Nazwa artykułu', max_length=255, null=True, blank=True)
+    auchan_name = models.CharField('Nazwa Auchan', max_length=255, null=True, blank=True)
     plu_num = models.IntegerField('Numer krótki', default=0)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
 

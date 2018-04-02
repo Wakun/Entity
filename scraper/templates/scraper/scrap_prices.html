@@ -1,0 +1,9 @@
+{% extends 'scraper/base.html' %}
+
+{% block content %}
+
+    <h1>GOTOWE!</h1>
+    <h4>Czas pobierania (w sekundach): {{ time }}</h4>
+    <a href="{% url 'scraper:Lista produktów' %}" class="button">Przejdź do listy produktów</a>
+
+{% endblock %}

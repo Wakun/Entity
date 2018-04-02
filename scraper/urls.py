@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^productslist/$', views.products_list, name='Lista produktów'),
     url(r'^productslist/(?P<pk>\d+)/$', views.product_view, name='Edycja produktu'),
     url(r'^addproduct/$', views.add_product, name='Dodaj produkt'),
+    url(r'^scrapprices/$', views.scrap_prices, name='Pobierz ceny')
 
 
 ]
