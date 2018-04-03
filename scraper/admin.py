@@ -14,6 +14,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('plu_num', 'art_name', 'auchan_name', 'category', 'auchan_price', 'rtveuro_price',
                     'mediamarkt_price', 'mediaexpert_price')
 
+    search_fields = ['plu_num']
+
 class CategoryAdmin(admin.ModelAdmin):
 
     fieldsets = [
@@ -21,6 +23,8 @@ class CategoryAdmin(admin.ModelAdmin):
     ]
 
     list_display = ('id', 'category_name')
+
+    search_fields = ['category_name']
 
 
 admin.site.register(Product, ProductAdmin)

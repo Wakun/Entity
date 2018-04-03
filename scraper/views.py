@@ -17,11 +17,17 @@ class ProductsListTable(tables.Table):
     plu_num = tables.Column()
     art_name = tables.Column()
     auchan_price = tables.Column()
+    rtveuro_url_valid = tables.BooleanColumn(verbose_name='RTV')
     rtveuro_price = tables.Column()
+    mediamarkt_url_valid = tables.BooleanColumn(verbose_name='MM')
     mediamarkt_price = tables.Column()
+    mediaexpert_url_valid = tables.BooleanColumn(verbose_name='ME')
     mediaexpert_price = tables.Column()
     edit_link = tables.LinkColumn('scraper:Edycja produktu', args=[A('pk')], text='Edytuj', empty_values=(), verbose_name='Edycja')
 
+    class Meta:
+
+        attrs = {'class': 'blueTable'}
 
 @login_required(login_url='/login')
 def products_list(request):

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 
 def rtveuro_scraper(url):
 
+
     page = requests.get(url)
 
     soup = bs(page.text, 'html.parser')
@@ -16,6 +17,7 @@ def rtveuro_scraper(url):
 
 def mediamarkt_scraper(url):
 
+
     page = requests.get(url)
 
     soup = bs(page.text, 'html.parser')
@@ -27,6 +29,7 @@ def mediamarkt_scraper(url):
     return float(price)
 
 def mediaexpert_scraper(url):
+
 
     page = requests.get(url)
 
