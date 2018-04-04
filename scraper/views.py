@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 import django_tables2 as tables
 from django_tables2.utils import A
+import openpyxl
 
 
 from .models import Product, File, Category
@@ -103,29 +104,57 @@ def scrap_prices(request):
 
 def upload_auchan_prices(request):
 
+    """
+    Ceny dyskont muszą być skopiowane i wklejone do nowego pliku .xlsx
+    Kolumny:
+        T = CSB
+        U = CSP
+        Z = Nr art.
+        AA = Nazwa art.
+    """
     if request.method == 'POST':
 
-        file = FileUploadForm(request.POST, request.FILES)
+        fileuploadform = FileUploadForm(request.POST, request.FILES)
 
-        if file.is_valid():
-            file.save()
+        if fileuploadform.is_valid():
+            fileuploadform.save()
 
-        prices = file.instance
-        filename = prices.file.name
-
-        x = File.objects.get(file=filename)
-
-        import openpyxl
-
-        wb = openpyxl.load_workbook(x)
-
-        test = wb.get_sheet_names()
+        prices = fileuploadform.instance
 
 
-        return HttpResponse(test)
+        wb = openpyxl.load_workbook(prices.file.path)
+
+        ws = wb[wb.sheetnames[0]]
+
+        num = ''
+        price = ''
+        name = ''
+
+        for row in range(ws.max_row):
+            for column in "U":
+                cell_name = "{}{}".format(column, row + 1)
+                price = str(ws[cell_name].value)
+                if ws[cell_name].value is None:
+                    for new_column in 'T':
+                        cell_name = "{}{}".format(new_column, row + 1)
+                        price = str(ws[cell_name].value)
+            for column in "Z":
+                cell_name = "{}{}".format(column, row + 1)
+                num = str(ws[cell_name].value)
+            for column in ["AA"]:
+                cell_name = "{}{}".format(column, row + 1)
+                name = str(ws[cell_name].value)
 
 
+            try:
+                prod = Product.objects.get(plu_num=num, auchan_name=name.strip())
+                prod.auchan_price = float(price)
+                prod.save()
+            except Product.DoesNotExist:
+                continue
 
+
+        return render(request, 'scraper/upload_auchan_prices_done.html')
 
 
     else:

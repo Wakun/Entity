@@ -153,3 +153,10 @@ fabric.properties
 
 # *.iml
 # modules.xml
+
+.xls
+.xlsx
+.xlsm
+*.xls
+*.xlsx
+*.xlsm
