@@ -6,8 +6,8 @@ import django_tables2 as tables
 from django_tables2.utils import A
 
 
-from .models import Product
-from .forms import ProductForm
+from .models import Product, File, Category
+from .forms import ProductForm, FileUploadForm
 from .scrapers import rtveuro_scraper, mediamarkt_scraper, mediaexpert_scraper
 
 def index(request):
@@ -99,3 +99,38 @@ def scrap_prices(request):
     time = str(time).split('.', 1)[0]
 
     return render(request, 'scraper/scrap_prices.html', {'time': time})
+
+
+def upload_auchan_prices(request):
+
+    if request.method == 'POST':
+
+        file = FileUploadForm(request.POST, request.FILES)
+
+        if file.is_valid():
+            file.save()
+
+        prices = file.instance
+        filename = prices.file.name
+
+        x = File.objects.get(file=filename)
+
+        import openpyxl
+
+        wb = openpyxl.load_workbook(x)
+
+        test = wb.get_sheet_names()
+
+
+        return HttpResponse(test)
+
+
+
+
+
+    else:
+
+        file = FileUploadForm()
+
+    return render(request, 'scraper/upload_auchan_prices.html', {'file': file})
+

@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 from django.core.validators import URLValidator, ValidationError
 
@@ -98,4 +99,12 @@ class Category(models.Model):
         verbose_name = 'Kategoria'
         verbose_name_plural = 'Kategorie'
 
+
+class File(models.Model):
+
+    file = models.FileField(upload_to='dyskonty/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
 
