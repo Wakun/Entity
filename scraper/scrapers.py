@@ -12,6 +12,9 @@ def rtveuro_scraper(url):
     price = soup.find('div', {'class': "price-normal selenium-price-normal"})
     price = price.get_text().strip()[:-3]
 
+    if ',' in price:
+        price = price.replace(',', '.')
+
     return float(price)
 
 

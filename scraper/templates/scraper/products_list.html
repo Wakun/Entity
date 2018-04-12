@@ -1,7 +1,48 @@
 {% extends 'scraper/base.html' %}
 {% load render_table from django_tables2 %}
+{% load static %}
+
+{% block title %}Lista produktów{% endblock %}
 
 {% block content %}
+
+
     {% render_table products_list %}
 
+    <script language="javascript" type="text/javascript">
+                var filtersConfig = {
+              // instruct TableFilter location to import ressources from
+              base_path: 'https://unpkg.com/tablefilter@latest/dist/tablefilter/',
+              col_0: '',
+              col_1: '',
+              col_2: 'select',
+              col_3: 'none',
+              col_4: 'select',
+              col_5: 'none',
+              col_6: 'select',
+              col_7: 'none',
+              col_8: 'select',
+              col_9: 'none',
+              col_10: 'none',
+              alternate_rows: true,
+              btn_reset: true,
+              loader: true,
+              mark_active_columns: true,
+              highlight_keywords: true,
+              no_results_message: true,
+              help_instructions: false,
+              columns_exact_match: [true],
+              extensions: [{
+                name: 'sort',
+                images_path: 'https://unpkg.com/tablefilter@latest/dist/tablefilter/style/themes/'
+              }]
+            };
+
+            var tf = new TableFilter('productTable', filtersConfig);
+            tf.init();
+    </script>
+
+
 {% endblock %}
+
+

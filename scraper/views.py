@@ -14,9 +14,12 @@ from .scrapers import rtveuro_scraper, mediamarkt_scraper, mediaexpert_scraper
 def index(request):
     return render(request, 'scraper/index.html')
 
+
+
 class ProductsListTable(tables.Table):
     plu_num = tables.Column()
     art_name = tables.Column()
+    category = tables.Column(accessor='category.category_name')
     auchan_price = tables.Column()
     rtveuro_url_valid = tables.BooleanColumn(verbose_name='RTV')
     rtveuro_price = tables.Column()
@@ -28,7 +31,8 @@ class ProductsListTable(tables.Table):
 
     class Meta:
 
-        attrs = {'class': 'blueTable'}
+        attrs = {'class': 'blueTable', 'id': 'productTable'}
+        row_attrs = {'id': lambda record: record.pk}
 
 @login_required(login_url='/login')
 def products_list(request):

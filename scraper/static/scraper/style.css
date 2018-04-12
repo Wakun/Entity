@@ -2,6 +2,10 @@ body {
     background: lightsteelblue;
 }
 
+caption {
+  display: none;
+}
+
 .navbar {
     border-radius: 0;
 }
