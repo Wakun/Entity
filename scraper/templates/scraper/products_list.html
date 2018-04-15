@@ -42,6 +42,71 @@
             tf.init();
     </script>
 
+    <script type="text/javascript">
+
+        $(document).ready( function () {
+
+            var table, aP, rtvP, mmP, meP;
+            table = document.getElementById('productTable');
+
+            function convertP(value) {
+                if (value !== '—') {
+                    return parseFloat(value);
+                }
+
+                return 0;
+            }
+
+            for (i = 1; i < table.rows.length; i++) {
+
+                var rowCells = table.rows.item(i).cells;
+
+                aP = convertP(rowCells[3].firstChild.data);
+                rtvP = convertP(rowCells[5].firstChild.data);
+                mmP = convertP(rowCells[7].firstChild.data);
+                meP = convertP(rowCells[9].firstChild.data);
+
+
+                var points = [];
+
+                [5, 7, 9].forEach(function(i) {
+
+                    points.push(convertP(rowCells[i].firstChild.data));
+
+                });
+
+                points = points.filter( function (val) {
+                    return val !== 0;
+                });
+
+                function colorCondition(aP, points) {
+                    var state = 'green';
+                    var epsilon = 0.000001;
+
+                    if (points === []) {
+                        state = 'green';
+                    } else {
+                        points.forEach(function(p) {
+                        if (aP > (p + epsilon)) {
+                            state = 'red';
+                        } else if (aP > (p - epsilon)) {
+                          state = 'yellow';
+                        }
+                    });
+                    }
+
+
+                    return state;
+                }
+
+                rowCells[3].bgColor = colorCondition(aP, points);
+
+            }
+
+        })
+
+    </script>
+
 
 {% endblock %}
 

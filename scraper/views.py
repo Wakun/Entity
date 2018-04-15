@@ -20,7 +20,7 @@ class ProductsListTable(tables.Table):
     plu_num = tables.Column()
     art_name = tables.Column()
     category = tables.Column(accessor='category.category_name')
-    auchan_price = tables.Column()
+    auchan_price = tables.Column(attrs={'td': {'id': 'auchan_price'}})
     rtveuro_url_valid = tables.BooleanColumn(verbose_name='RTV')
     rtveuro_price = tables.Column()
     mediamarkt_url_valid = tables.BooleanColumn(verbose_name='MM')
